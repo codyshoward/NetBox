@@ -1,0 +1,47 @@
+---
+#add manufacturers from group-vars/vars.yml
+- hosts: localhost
+
+  tasks:
+  - name: "TASK 20: SETUP MANUFACTURERS"
+    netbox.netbox.netbox_manufacturer:
+      netbox_url: 'https://18.234.41.156'
+      netbox_token: 'a15b607cf490adf837921672ea2ed5dc41e34ad5'
+      validate_certs: false
+      data:
+        name: "{{ manufacturer }}"
+    loop: "{{ manufacturers }}"
+    loop_control:
+      loop_var: manufacturer
+     
+     #add device types from group-vars/vars.yml
+     
+  - name: "TASK 30: SETUP DEVICE TYPES"
+    netbox.netbox.netbox_device_type:
+      netbox_url:  'https://18.234.41.156'
+      netbox_token: 'a15b607cf490adf837921672ea2ed5dc41e34ad5'
+      validate_certs: false
+      data:
+        model: "{{ device_type.model }}"
+        manufacturer: "{{ device_type.manufacturer }}"
+        slug: "{{ device_type.slug }}"
+        part_number: "{{ device_type.part_number }}"
+    loop: "{{ device_types }}"
+    loop_control:
+      loop_var: device_type
+      label: "{{ device_type['model'] }}"
+
+
+         #add platforms from group-vars\vars.yml
+  - name: "TASK 40: SETUP PLATFORMS"
+    netbox.netbox.netbox_platform:
+      netbox_url: 'https://18.234.41.156'
+      netbox_token: 'a15b607cf490adf837921672ea2ed5dc41e34ad5'
+      validate_certs: false
+      data:
+        name: "{{ platform.name }}"
+        slug: "{{ platform.slug }}"
+    loop: "{{ platforms }}"
+    loop_control:
+      loop_var: platform
+      label: "{{ platform['name'] }}"
