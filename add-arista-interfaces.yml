@@ -1,0 +1,37 @@
+---
+- hosts: arista
+  vars:
+
+  tasks:
+#scans arista hosts for ip addresses and then creates the ma1 interface in netbox for each host in the inventory file
+#the second task can be duplicated for any interface with an IP on the arista machines
+
+  - name: "TASK 210: NETBOX >> ADD IP ADDRESS OF arista HOST"
+    netbox.netbox.netbox_ip_address:
+      netbox_url: 'https://X.X.X.X'
+      netbox_token: 'tokengoeshere'
+      state: present
+      data:
+        address: "{{ item }}/24"
+        status: active
+        tenant: Placeholder
+        assigned_object:
+          name: ma1
+          device: "{{ ansible_hostname }}"
+          #assigned_object: "{{ ansible_hostname }}"
+    delegate_to: localhost
+    with_items: "{{ ansible_facts['default_ipv4']['address'] }}"
+
+  - name: "TASK 215: NETBOX >> ASSOCIATE MGMT IP ADDRESS TO DEVICE"
+    netbox.netbox.netbox_device:
+      netbox_url: 'https://18.234.41.156'
+      netbox_token: 'a15b607cf490adf837921672ea2ed5dc41e34ad5'
+      validate_certs: false
+      data:
+        name: "{{ ansible_hostname }}"
+        device_type: vEOS
+        platform: veos
+        serial: "{{ ansible_facts['board_serial'] }}"
+        status: Active
+        primary_ip4: "{{ ansible_facts['default_ipv4']['address'] }}/24"
+    delegate_to: localhost
