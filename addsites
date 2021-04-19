@@ -1,0 +1,20 @@
+---
+#Setup Site
+- hosts: localhost
+
+  tasks:
+  - name: Create Tenant
+    netbox.netbox.netbox_tenant:
+      validate_certs: false
+      netbox_url: 'https://18.234.41.156'
+      netbox_token: 'a15b607cf490adf837921672ea2ed5dc41e34ad5'
+      data: "{{ item }}"
+    loop: "{{ tenant_list }}"
+
+  - name: Create SITES
+    netbox.netbox.netbox_site:
+      validate_certs: false
+      netbox_url: 'https://18.234.41.156'
+      netbox_token: 'a15b607cf490adf837921672ea2ed5dc41e34ad5'
+      data: "{{ item }}"
+    loop: "{{ site_list }}"
