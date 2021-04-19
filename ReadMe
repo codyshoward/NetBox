@@ -1,1 +1,4 @@
-Fill in with info. 
+For use with netbox, ansible and the netbox modules. 
+Module Galaxy Page https://galaxy.ansible.com/netbox/netbox?extIdCarryOver=true&sc_cid=701f2000001OH7YAAW before starting
+NetBox Docs https://netbox.readthedocs.io/en/stable/
+Be sure to check all files for placeholders that will need to be changed for the values to be accepted by the modules or netbox itself. 
