@@ -1,0 +1,37 @@
+---
+- hosts: centos
+  vars:
+
+  tasks:
+
+#scans all defined centos assets and finds IPs
+#then finds the ip for the ens33 interface and adds that interface with IP into netbox
+  - name: "TASK 210: NETBOX >> ADD IP ADDRESS OF Centos HOST"
+    netbox.netbox.netbox_ip_address:
+      netbox_url: 'https://18.234.41.156'
+      netbox_token: 'a15b607cf490adf837921672ea2ed5dc41e34ad5'
+      state: present
+      data:
+        address: "{{ item }}/24"
+        status: active
+        tenant: CodyLab
+        assigned_object:
+          name: ens33
+          device: "{{ ansible_hostname }}"
+          #assigned_object: "{{ ansible_hostname }}"
+    delegate_to: localhost
+    with_items: "{{ ansible_facts['default_ipv4']['address'] }}"
+
+  - name: "TASK 215: NETBOX >> ASSOCIATE MGMT IP ADDRESS TO DEVICE"
+    netbox.netbox.netbox_device:
+      netbox_url: 'https://18.234.41.156'
+      netbox_token: 'a15b607cf490adf837921672ea2ed5dc41e34ad5'
+      validate_certs: false
+      data:
+        name: "{{ ansible_hostname }}"
+        device_type: linux
+        platform: Centos
+        serial: "{{ ansible_facts['board_serial'] }}"
+        status: Active
+        primary_ip4: "{{ ansible_facts['default_ipv4']['address'] }}/24"
+    delegate_to: localhost
