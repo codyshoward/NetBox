@@ -1,5 +1,5 @@
 ---
-#add manufacturers from group-vars/vars.yml
+#add manufacturers from group_vars/all.yml
 - hosts: localhost
 
   tasks:
