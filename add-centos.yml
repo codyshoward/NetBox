@@ -1,0 +1,42 @@
+---
+- hosts: centos
+  vars:
+          # ansible_python_interpreter: /usr/bin/python3
+#ansible playbook to add centos machines but would probably work for most linux operating systems
+#add interfaces from the machines as well
+  tasks:
+  - name: "TASK 100: NETBOX >> ADD DEVICE TO NETBOX"
+    netbox.netbox.netbox_device:
+      netbox_url: 'https://18.234.41.156'
+      netbox_token: 'a15b607cf490adf837921672ea2ed5dc41e34ad5'
+      validate_certs: false
+      data:
+        name: "{{ ansible_hostname }}"
+        device_type: "{{ ansible_facts['system'] }}"
+        platform: "{{ ansible_facts['distribution'] }}"
+        serial: "{{ ansible_facts['ansible_board_serial'] }}"
+        serial: "{{ ansible_board_serial }}"
+        status: Active
+        #device_role: "{{ inventory_hostname | get_role_from_hostname }}"
+        #device_role: "{{ ansible_hostname }}"
+        device_role:  server
+        site: Placeholder
+        tenant: Placeholder
+        custom_fields:
+          #Aboot: "{{ ansible_cmdline['Aboot'] }}"
+    delegate_to: localhost
+
+  - name: "TASK 110: NETBOX >> ADD INTERFACES TO NETBOX"
+    netbox.netbox.netbox_device_interface:
+      netbox_url: 'https://18.234.41.156'
+      netbox_token: 'a15b607cf490adf837921672ea2ed5dc41e34ad5'
+      validate_certs: false
+      data:
+        device: "{{ ansible_hostname }}"
+        type: other
+        #description: "{{ item['description'] }}"
+        #mac_address: "{{ ansible_facts[item]['macaddress'] }}"
+        name: "{{ ansible_facts[item]['device'] }}"
+      state: present
+    with_items: "{{ ansible_interfaces }}"
+    delegate_to: localhost
