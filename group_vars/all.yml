@@ -1,0 +1,73 @@
+---
+#variable file for /netbox  be sure to put this file in group_vars/all.yml
+#be sure to review the file and change any placeholders
+
+tenant_list:
+  - name: Tenant1
+    slug: tenant1
+
+site_list:
+  - name: Tenant Owner
+    time_zone: America/Chicago
+    status: Active
+    tenant: Tenant1
+    contact_name: Tenant Owner Name
+    contact_phone: Phone Number Goes Here
+    contact_email: Email goes here
+manufacturers:  # In alphabetical order
+  - Arista
+  - Cisco
+  - Juniper
+  - Linux
+  - VMWare
+device_types:
+  - model: ASAv
+    manufacturer: Cisco
+    slug: asav
+    part_number: asav
+    is_full_depth: False
+    Tenant: Tenant1
+
+  - model: vEOS
+    manufacturer: Arista
+    slug: veos
+    part_number: veos
+    is_full_depth: False
+    Tenant: Tenant1
+
+  - model: junos
+    manufacturer: Juniper
+    slug: junos
+    part_number: junos
+    is_full_depth: False
+    Tenant: Tenant1
+
+  - model: linux
+    manufacturer: Linux
+    slug: linux
+    part_number: linux
+    is_full_depth: False
+    Tenant: Tenant1
+
+  - model: VMWare
+    manufacturer: VMWare
+    slug: vmware
+    part_number: vmware
+    is_full_depth: False
+    Tenant: Tenant1
+    
+platforms:
+  - name: ASA
+    slug: asa
+  - name: veos
+    slug: veos
+  - name: eos
+    slug: eos
+  - name: esxi
+    slug: esxi
+  - name: vcenter
+    slug: vcenter
+  - name: junos
+    slug: junos
+  - name: CentOS
+    slug: centos
